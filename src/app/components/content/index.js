@@ -171,7 +171,7 @@ function Content() {
   };
 
   //   QUANTITE PRODUIT
-  const [quantityPanier, setQuantityPanier] = useState(0);
+  const [quantityPanier, setQuantityPanier] = useState(1);
   const quantityUpPanier = () => {
     setQuantityPanier(quantityPanier + 1);
   };
@@ -227,14 +227,14 @@ function Content() {
     setSelectedPlaxage(plaxageId);
   };
 
-  const calculerValeur = (valeur) => {
+  const calculerValeur = (valeur, quantityPanier) => {
     if (selectedPlaxage !== null) {
       const plaxage = plaxages.find(
         (plaxage) => plaxage.id === selectedPlaxage
       );
       const pourcentage = plaxage ? plaxage.pourcentage : 0;
       console.log(pourcentage);
-      return valeur + (valeur * pourcentage) / 100;
+      return valeur + (quantityPanier * valeur * pourcentage) / 100;
     }
     return valeur;
   };
@@ -391,7 +391,7 @@ function Content() {
               <p className="text-7xl font-bold mb-12 flex justify-between">
                 {/* Valeur initial 2055, additionner par la card en euro */}
                 <span>
-                  {calculerValeur(2055 + selectedPourcentageCard * quantityPanier).toFixed(2)}
+                  {calculerValeur((2055 + selectedPourcentageCard)*quantityPanier).toFixed(2)}
                 </span>
                 <span className="text-4xl font-bold">
                   <FontAwesomeIcon
@@ -719,4 +719,4 @@ function Content() {
     </div>
   );
 }
-export d
+export default Content;
