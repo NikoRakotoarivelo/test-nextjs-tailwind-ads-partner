@@ -27,7 +27,6 @@ function Content() {
 
   //Image du liste pour une produit
   const images = [
-    "/106.jpg",
     "/golf.jpg",
     "/hyundai.jpg",
     "/golf1.jpg",
