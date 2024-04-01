@@ -13,10 +13,10 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        customGray: 'rgb(33, 45, 58)',
-        grayLayout: 'rgb(236, 236, 236)',
-        colorButtonHeader: 'rgb(51, 146, 136)',
-        colorChoisissez: 'rgb(115, 28, 28)'
+        customGray: 'rgb(33, 45, 58)', // Couleur personnalisée
+        grayLayout: 'rgb(236, 236, 236)', // Couleur du <body>
+        colorButtonHeader: 'rgb(51, 146, 136)', // Couleur personnalisée du boutton sur header
+        colorChoisissez: 'rgb(115, 28, 28)' // Couleur personnalisée sur le champs à choisissez
       },
     },
   },

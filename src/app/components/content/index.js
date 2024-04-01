@@ -1,10 +1,4 @@
 import {
-  faPhone,
-  faCalendarAlt,
-  faBars,
-  faMapMarkerAlt,
-  faShoppingCart,
-  faUser,
   faEuroSign,
   faStar,
   faHeart,
@@ -16,6 +10,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import Navbar from "../navbar";
+import BreakCrumb from "./breakcrumb";
+import Flag from "./flag";
+import OptionsAdditionnels from "./option_additionnel";
+import Panier from "../panier";
 
 function Content() {
   //PRODUIT
@@ -25,6 +23,17 @@ function Content() {
     "Porte de garage",
     "Pergola",
     "Grillage",
+  ];
+
+  //Image du liste pour une produit
+  const images = [
+    "/106.jpg",
+    "/golf.jpg",
+    "/hyundai.jpg",
+    "/golf1.jpg",
+    "/golf2.jpg",
+    "/golf3.jpg",
+    "/golf4.jpg",
   ];
 
   const [indexProduit, setindexProduit] = useState(0);
@@ -45,17 +54,26 @@ function Content() {
   const handleProduitChange = (event) => {
     setSelectedProduit(event.target.value);
   };
-  //PRODUIT
 
-  const images = [
-    "/106.jpg",
-    "/golf.jpg",
-    "/hyundai.jpg",
-    "/golf1.jpg",
-    "/golf2.jpg",
-    "/golf3.jpg",
-    "/golf4.jpg",
-  ];
+  const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [startIndex, setStartIndex] = useState(0);
+  const handleClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const handleNext = () => {
+    if (startIndex < images.length - 3) {
+      setStartIndex(startIndex + 1);
+      setSelectedImage(images[startIndex + 1]);
+    }
+  };
+
+  const handlePrev = () => {
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1);
+      setSelectedImage(images[startIndex - 1]);
+    }
+  };
 
   // COULEUR
   const couleurs = [
@@ -84,28 +102,8 @@ function Content() {
   const handleCouleurClick = (couleur) => {
     setSelectedCouleur(couleur);
   };
-  // COULEUR
 
-  const [selectedImage, setSelectedImage] = useState(images[0]);
-  const [startIndex, setStartIndex] = useState(0);
-  const handleClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const handleNext = () => {
-    if (startIndex < images.length - 3) {
-      setStartIndex(startIndex + 1);
-      setSelectedImage(images[startIndex + 1]);
-    }
-  };
-
-  const handlePrev = () => {
-    if (startIndex > 0) {
-      setStartIndex(startIndex - 1);
-      setSelectedImage(images[startIndex - 1]);
-    }
-  };
-
+  // LES CARDS DANS PLUS VALUES
   const cardsData = [
     {
       id: 1,
@@ -145,20 +143,16 @@ function Content() {
     },
   ];
   const [selectedCard, setSelectedCard] = useState(null);
-
-  const [selectedDescription, setSelectedDescription] = useState("Aucune ... ");
+  const [selectedDescription, setSelectedDescription] = useState("");
   const [selectedPourcentageCard, setSelectedPourcentageCard] = useState(0);
 
   const handleCardSelect = (cardId, cardDescription, cardPourcentage) => {
+    setSelectedCard(cardId);
     setSelectedDescription(cardDescription);
     setSelectedPourcentageCard(cardPourcentage);
   };
 
-  const handleCardSelectPourcentage = (cardId, cardPourcentage) => {
-    setSelectedPourcentageCard(cardPourcentage);
-  };
-
-  //   QUANTITE VANTAIL
+  // QUANTITE VANTAIL
   const [quantityVantail, setQuantityVantail] = useState(0);
   const quantityUpVantail = () => {
     setQuantityVantail(quantityVantail + 1);
@@ -170,7 +164,7 @@ function Content() {
     }
   };
 
-  //   QUANTITE PRODUIT
+  // QUANTITE PRODUIT
   const [quantityPanier, setQuantityPanier] = useState(1);
   const quantityUpPanier = () => {
     setQuantityPanier(quantityPanier + 1);
@@ -190,13 +184,13 @@ function Content() {
     setPoseChecked(pose);
   };
 
-  //   HAUTEUR
+  // HAUTEUR
   const [selectedHauteur, setSelectedHauteur] = useState("0");
   const handleHauteurChange = (event) => {
     setSelectedHauteur(event.target.value);
   };
 
-  //   LARGEUR
+  // LARGEUR
   const [selectedLargeur, setSelectedLargeur] = useState("0");
   const handleLargeurChange = (event) => {
     setSelectedLargeur(event.target.value);
@@ -234,58 +228,35 @@ function Content() {
       );
       const pourcentage = plaxage ? plaxage.pourcentage : 0;
       console.log(pourcentage);
-      return valeur + (quantityPanier * valeur * pourcentage) / 100;
+      return valeur + (valeur * pourcentage) / 100;
     }
     return valeur;
   };
-  // PLAXAGE
+
+  // OPTIONS ADDITIONNELS
 
   return (
     <div className="mx-auto">
       <Navbar />
-      <div className="flex flex-wrap bg-gray-300 overflow-hidden">
-        <div className="flex w-full justify-around">
-          <div className="w-1/3 mx-12 h-auto"></div>
-          <div className="w-full">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="p-2 bg-gray-300  sm:text-justify flex w-full flex-col md:flex-row">
-                <a href="#" className="hover:text-gray-700 text-sm mx-2">
-                  Accueil
-                </a>
-                <span>&gt;</span>
-                <a href="#" className="hover:text-gray-700 text-sm mx-2">
-                  Fenêtre
-                </a>
-                <span>&gt;</span>
-                <a
-                  href="#"
-                  className="hover:text-gray-700 text-sm font-bold mx-2"
-                >
-                  Fenêtre PVC sur mesure
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap justify-between items-center w-full"></div>
-        </div>
-      </div>
+      <BreakCrumb />
 
       <div className="flex flex-wrap bg-gray-300 overflow-hidden">
         <div className="flex w-full justify-around mx-8">
-          <div className="w-24 h-24 my-8 rounded">
-            {images.slice(startIndex, startIndex + 3).map((image, index) => (
-              <img
-                key={index}
-                src={image}
-                width={500}
-                height={600}
-                alt={`Thumbnail ${index}`}
-                className="cursor-pointer w-full object-cover mb-2 rounded-3xl transition duration-200 group transform hover:-translate-y-4 hover:shadow-3xl"
-                onClick={() => handleClick(image)}
-              />
-            ))}
-            <div className="flex justify-center my-4">
+          <div className="relative">
+            <div className="w-24 h-24 my-8 rounded">
+              {images.slice(startIndex, startIndex + 3).map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  width={500}
+                  height={600}
+                  alt={`Thumbnail ${index}`}
+                  className="cursor-pointer w-full object-cover mb-2 rounded-3xl transition duration-200 group transform hover:-translate-y-4 hover:shadow-3xl"
+                  onClick={() => handleClick(image)}
+                />
+              ))}
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 flex justify-center">
               <a
                 onClick={handlePrev}
                 className={`focus:outline-none mr-2 ${
@@ -314,6 +285,7 @@ function Content() {
               </a>
             </div>
           </div>
+
           <div className="relative overflow-hidden">
             <img
               src={selectedImage}
@@ -322,14 +294,16 @@ function Content() {
               alt="Selected"
               className="my-6 rounded-3xl"
             />
-            <div className="absolute bottom-20 right-0 flex items-center">
-              <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center">
-                +
-              </span>
-              <div className="bg-colorButtonHeader text-white text-xs w-full h-5 rounded-md flex items-center justify-center">
-                {selectedDescription}
+            {selectedDescription !== "" && (
+              <div className="absolute bottom-20 right-0 flex items-center">
+                <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center">
+                  +
+                </span>
+                <div className="bg-colorButtonHeader text-white text-xs w-full h-5 rounded-md flex items-center justify-center">
+                  {selectedDescription}
+                </div>
               </div>
-            </div>
+            )}
             <div className="absolute bottom-40 left-4 flex flex-col">
               {couleurs.map((couleur, index) => (
                 <button
@@ -346,28 +320,15 @@ function Content() {
               <p className="text-sm text-gray-400">
                 Ref mms-{selectedProduit.toLowerCase()}-{quantityVantail}V
               </p>
-              <p className="text-sm mb-8">
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="text-3xl font-bold text-yellow-400"
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="text-3xl font-bold text-yellow-400"
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="text-3xl font-bold text-yellow-400"
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="text-3xl font-bold text-yellow-400"
-                />
-                <FontAwesomeIcon
-                  icon={faStar}
-                  className="text-3xl font-bold text-yellow-400"
-                />
-                <span className="text-gray-400">(72 Avis) |</span>
+              <p className="text-sm mb-8 flex items-center">
+                {[...Array(5)].map((_, index) => (
+                  <FontAwesomeIcon
+                    key={index}
+                    icon={faStar}
+                    className="text-xl md:text-3xl font-bold text-yellow-400"
+                  />
+                ))}
+                <span className="text-gray-400 ml-1 md:ml-2">(72 Avis) |</span>
               </p>
               <p className="font-bold text-xl  mb-12">
                 {selectedProduit && <span>{selectedProduit}</span>}
@@ -386,12 +347,16 @@ function Content() {
                 )}
                 {poseChecked !== "Sans la pose" && <span> + {"pose"} </span>}
                 <span> + couleur {selectedCouleur} </span>
-                <span> + {selectedDescription}.</span>
+                {selectedDescription != "" && (
+                  <span> + {selectedDescription}.</span>
+                )}
               </p>
               <p className="text-7xl font-bold mb-12 flex justify-between">
-                {/* Valeur initial 2055, additionner par la card en euro */}
+                {/* Valeur initial 2055, additionner par la card(exemple: Soubassement plein) en euro */}
                 <span>
-                  {calculerValeur((2055 + selectedPourcentageCard)*quantityPanier).toFixed(2)}
+                  {calculerValeur(
+                    (2055 + selectedPourcentageCard) * quantityPanier
+                  ).toFixed(2)}
                 </span>
                 <span className="text-4xl font-bold">
                   <FontAwesomeIcon
@@ -434,21 +399,8 @@ function Content() {
                 />
               </span>
             </div>
-            <div className="container mx-auto">
-              <div className="flex flex-col md:flex-row justify-between">
-                <button className="w-50 bg-yellow-400 text-black font-bold duration-500 px-4 py-1 my-2 rounded mr-4 md:mr-2 text-sm">
-                  <span>Ajouter au panier</span>
-                  <FontAwesomeIcon
-                    icon={faShoppingCart}
-                    className="h-4 w-4 transform rotate-260 ml-1"
-                    style={{ color: "black" }}
-                  />
-                </button>
-                <button className="w-50 bg-colorButtonHeader text-white font-bold duration-500 px-4 py-1 my-2 rounded text-sm">
-                  Devis MCE gratuit
-                </button>
-              </div>
-            </div>
+
+            <Panier />
           </div>
         </div>
       </div>
@@ -552,37 +504,7 @@ function Content() {
         </div>
       </div>
 
-      <div className="flex flex-wrap bg-gray-300 overflow-hidden">
-        <div className="flex w-full justify-around">
-          <div className="w-1/3 mx-12 h-auto my-12"></div>
-          <div className="my-8 w-3/4">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="w-full md:w-auto mb-6 md:mb-0 md:mr-8">
-                <p>
-                  <input
-                    type="radio"
-                    className="mr-4 appearance-none rounded-full border-2 bg-white w-5 h-5 checked:bg-colorButtonHeader checked:border-white"
-                  />
-                  <label className="text-lg">
-                    Options additionnels{" "}
-                    <span className="text-sm text-gray-400">(plus value)</span>
-                  </label>
-                </p>
-                <p className="mb-2 md:mb-0 text-sm">Vitrage</p>
-                <div>
-                  <select className="border-2 rounded-lg border-gray-500">
-                    <option>Vitrage imprimé thermique GA</option>
-                    <option>Vitrage imprimé thermique GA</option>
-                    <option>Vitrage imprimé thermique GA</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap justify-between items-center w-full"></div>
-        </div>
-      </div>
+      <OptionsAdditionnels />
 
       <div className="flex flex-wrap bg-gray-300 overflow-hidden">
         <div className="flex w-full justify-around">
@@ -597,9 +519,11 @@ function Content() {
                     onChange={() => handlePlaxageSelection(plaxage.id)}
                   />
                   <label className="flex flex-col w-full">
-                    <span className="self-end text-right text-xs text-red-600 mr-24">
-                      {plaxage.pourcentage}%
-                    </span>
+                    {plaxage.pourcentage !== 0 && (
+                      <span className="self-end text-right text-xs text-red-600 mr-24">
+                        +{plaxage.pourcentage}%
+                      </span>
+                    )}
                     <span className="text-sm">{plaxage.description}</span>
                   </label>
                 </li>
@@ -613,7 +537,7 @@ function Content() {
                   {cardsData.map((card) => (
                     <div
                       key={card.id}
-                      className={`border p-4 rounded-md ${
+                      className={`border-2 p-4 rounded-md ${
                         selectedCard === card.id
                           ? "border-colorButtonHeader"
                           : "border-white"
@@ -703,19 +627,7 @@ function Content() {
         </div>
       </div>
 
-      <div className="flex flex-wrap bg-gray-300 overflow-hidden">
-        <div className="flex w-full justify-around">
-          <div className="w-3/4 mx-12 h-auto my-12"></div>
-
-          <div className="my-12 w-full border-6 grid grid-cols-3">
-            <div className="bg-blue-500 h-1"></div>
-            <div className="bg-white h-1"></div>
-            <div className="bg-red-500 h-1"></div>
-          </div>
-
-          <div className="flex flex-wrap justify-between items-center w-full"></div>
-        </div>
-      </div>
+      <Flag />
     </div>
   );
 }

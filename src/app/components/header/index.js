@@ -2,7 +2,6 @@
 import {
   faPhone,
   faCalendarAlt,
-  faBars,
   faMapMarkerAlt,
   faShoppingCart,
   faUser,
